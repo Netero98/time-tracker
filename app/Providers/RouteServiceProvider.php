@@ -19,6 +19,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/dashboard';
 
+    public const ROUTE_PROJECTS_INDEX = 'projects.index';
+    public const ROUTE_PROJECTS_STORE = 'projects.store';
+    public const ROUTE_PROJECTS_DESTROY = 'projects.destroy';
+    public const ROUTE_PROJECTS_UPDATE = 'projects.update';
+
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
