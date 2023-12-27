@@ -39,8 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/projects')->group(function () {
         Route::get('/', [ProjectController::class, 'index'])->name(RouteServiceProvider::ROUTE_PROJECTS_INDEX);
         Route::post('/', [ProjectController::class, 'store'])->name(RouteServiceProvider::ROUTE_PROJECTS_STORE);
-        Route::delete('/', [ProjectController::class, 'destroy'])->name(RouteServiceProvider::ROUTE_PROJECTS_DESTROY);
-        Route::patch('/', [ProjectController::class, 'update'])->name(RouteServiceProvider::ROUTE_PROJECTS_UPDATE);
+        Route::delete('/{id}', [ProjectController::class, 'destroy'])->name(RouteServiceProvider::ROUTE_PROJECTS_DESTROY);
+        Route::patch('/{id}', [ProjectController::class, 'update'])->name(RouteServiceProvider::ROUTE_PROJECTS_UPDATE);
     });
 });
 

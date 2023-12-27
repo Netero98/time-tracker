@@ -34,13 +34,12 @@ const closeModal = () => {
 const sendCreateRequest = () => {
     form.post(route(routes.projects_store), {
         onSuccess: () => form.reset(),
-        onError: (err) => nameError.value = err.name,
+        onError: (errors) => nameError.value = errors.name,
     })
 }
 
 const sendDeleteRequest = () => {
-    form.delete(route(routes.projects_destroy), {
-        id: form.id,
+    form.delete(route(routes.projects_destroy, { id: form.id }), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset(),
@@ -70,7 +69,6 @@ const setPreDeleteState = (id) => {
                         @delete="(id) => { setPreDeleteState(id) }"
                         :project="project"
                         :key="project.id"
-                        class="flex gap-4"
                     />
                 </div>
             </div>

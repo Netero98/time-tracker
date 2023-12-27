@@ -31,12 +31,12 @@ final class ProjectController extends Controller
         return to_route(RouteServiceProvider::ROUTE_PROJECTS_INDEX);
     }
 
-    public function update(ProjectRequest $request)
+    public function update(ProjectRequest $request, int $id)
     {
         $validated = $request->validated();
 
         $project = Project::belongs($request->user())
-            ->whereKey($request->input(Project::PROP_ID))
+            ->whereKey($id)
             ->firstOrFail();
 
         $project->update($validated);
@@ -44,10 +44,10 @@ final class ProjectController extends Controller
         to_route(RouteServiceProvider::ROUTE_PROJECTS_INDEX);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, int $id)
     {
         $project = Project::belongs($request->user())
-            ->whereKey($request->input(Project::PROP_ID))
+            ->whereKey($id)
             ->firstOrFail();
 
         $project->delete();
