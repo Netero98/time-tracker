@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->restrictOnUpdate()->restrictOnDelete();
-            $table->string('name')->unique()->nullable(false);
+            $table->string('name')->nullable(false);
             $table->timestamps();
         });
     }

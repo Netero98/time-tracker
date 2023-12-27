@@ -24,7 +24,7 @@ class ProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            Project::PROP_NAME => ['required', 'string', 'max:255', 'unique:' . Project::TABLE],
+            Project::PROP_NAME => ['required', 'string', 'max:255'],
         ];
     }
 }
