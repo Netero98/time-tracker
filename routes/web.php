@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('/tracks')->group(function () {
         Route::patch('/{id}', [TrackController::class, 'update'])->name(RouteServiceProvider::ROUTE_TRACKS_UPDATE);
-        Route::post('/{project_id}', [TrackController::class, 'store'])->name(RouteServiceProvider::ROUTE_TRACK_STORE);
+        Route::post('/{project_id}', [TrackController::class, 'store'])->name(RouteServiceProvider::ROUTE_TRACKS_STORE);
     });
 });
 

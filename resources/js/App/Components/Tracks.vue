@@ -1,9 +1,10 @@
 <script setup>
 import TextInput from "@/Components/TextInput.vue";
-import {useForm} from "@inertiajs/vue3";
+import {router} from "@inertiajs/vue3";
 import SuccessButton from "@/Components/SuccessButton.vue";
 import Track from "@/App/Components/Track.vue";
 import {routes} from "@/settings.js";
+import {ref} from "vue";
 
 const props = defineProps({
     projectId: {
@@ -16,14 +17,13 @@ const props = defineProps({
     }
 })
 
-const form = useForm({
-    name: '',
-    seconds: 0,
-})
+const name = ref('')
+const seconds = ref(0)
 
 function sendPostRequest() {
-    form.post(route(routes.tracks_store, {project_id: props.projectId}), {
-        onSuccess: form.reset()
+    router.post(route(routes.tracks_store, {project_id: props.projectId}), {
+        name: name.value,
+        seconds: seconds.value,
     })
 }
 
@@ -32,7 +32,7 @@ function sendPostRequest() {
 <template>
     <div class="flex flex-col bg-gray-300 p-4 rounded-md gap-4">
         <div class="flex gap-2">
-            <TextInput class="flex-1" v-model="form.name"/>
+            <TextInput class="flex-1" v-model="name"/>
             <SuccessButton @click="sendPostRequest">Add track</SuccessButton>
         </div>
 

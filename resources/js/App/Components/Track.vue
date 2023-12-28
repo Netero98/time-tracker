@@ -31,6 +31,9 @@ const trackSaveError = ref('')
 const secondsSpentCurrent = ref(calculateSpentCurrent())
 let refreshSpentSecondsInterval = null
 const timeSpentReadable = computed(() => secondsReadable(secondsSpentCurrent.value))
+const form = useForm({
+    seconds: props.track.seconds
+})
 
 
 function computeIsSomeTrackActiveFromStorage() {
@@ -56,13 +59,12 @@ function startThisTrack () {
 }
 
 function stopThisTrack () {
-    const form = useForm({
-        seconds: calculateSpentCurrent()
-    })
+    form.seconds = calculateSpentCurrent()
 
     form.patch(route(routes.tracks_update, {id: props.track.id}), {
         preserveScroll: true,
         onError: () => {
+            //todo: test
             trackSaveError.value = 'Error from server, track is not saved, please, try again.'
         }
     })
