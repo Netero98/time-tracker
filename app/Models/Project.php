@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @method static Builder belongs(User $user)
@@ -24,10 +25,25 @@ final class Project extends Model
     public const PROP_NAME = 'name';
     public const PROP_UPDATED_AT = Model::UPDATED_AT;
 
+    public const RELATION_TRACKS = 'tracks';
+
+    protected $with = [
+        self::RELATION_TRACKS,
+    ];
+
     protected $fillable = [
         self::PROP_NAME,
         self::PROP_USER_ID,
     ];
+
+    public function tracks(): HasMany
+    {
+        return $this->hasMany(
+            Track::class,
+            Track::PROP_PROJECT_ID,
+            self::PROP_ID
+        );
+    }
 
     /**
      * Scope a query to only include active users.

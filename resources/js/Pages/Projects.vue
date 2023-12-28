@@ -57,7 +57,7 @@ const setPreDeleteState = (id) => {
 <template>
     <AuthenticatedLayout>
         <div class="mt-10 max-w-2xl mx-auto p-6">
-            <div class="flex mx-auto gap-4">
+            <div class="flex mx-auto gap-2">
                 <TextInput @input="nameError = ''" class="flex-1" v-model="form.name"></TextInput>
                 <SuccessButton @click="sendCreateRequest">Add project</SuccessButton>
                 <InputError :message="nameError"/>

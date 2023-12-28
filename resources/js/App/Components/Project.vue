@@ -8,6 +8,7 @@ import TextInput from "@/Components/TextInput.vue";
 import {useForm} from "@inertiajs/vue3";
 import {routes} from "@/settings.js";
 import InputError from "@/Components/InputError.vue";
+import Tracks from "@/App/Components/Tracks.vue";
 
 const props = defineProps({
     project: {
@@ -56,12 +57,21 @@ const sendUpdateRequest = () => {
             />
             <InputError :message="nameError"/>
             <PrimaryButton @click="toggleExpand">{{expanded ? 'collapse' : 'expand'}}</PrimaryButton>
-            <DangerButton @click="$emit('delete', project.id)">Delete</DangerButton>
         </div>
         <div v-show="expanded" class="flex gap-2">
-            <SuccessButton v-show="!updatingName" @click="toggleUpdatingName">Update name</SuccessButton>
+            <SuccessButton v-show="!updatingName" @click="toggleUpdatingName">Update project name</SuccessButton>
+            <DangerButton v-show="!updatingName" @click="$emit('delete', project.id)">Delete project</DangerButton>
             <SuccessButton v-show="updatingName" @click="sendUpdateRequest">Save</SuccessButton>
             <DangerButton v-show="updatingName" @click="toggleUpdatingName">Cancel</DangerButton>
+        </div>
+
+        <div v-show="expanded">
+            <h3 class="mt-8 font-semibold">Tracks</h3>
+            <Tracks
+                class="mt-2"
+                :tracks="project.tracks"
+                :projectId="project.id"
+            />
         </div>
     </div>
 </template>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TrackController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [ProjectController::class, 'store'])->name(RouteServiceProvider::ROUTE_PROJECTS_STORE);
         Route::delete('/{id}', [ProjectController::class, 'destroy'])->name(RouteServiceProvider::ROUTE_PROJECTS_DESTROY);
         Route::patch('/{id}', [ProjectController::class, 'update'])->name(RouteServiceProvider::ROUTE_PROJECTS_UPDATE);
+    });
+
+    Route::prefix('/tracks')->group(function () {
+        Route::patch('/{id}', [TrackController::class, 'update'])->name(RouteServiceProvider::ROUTE_TRACKS_UPDATE);
+        Route::post('/{project_id}', [TrackController::class, 'store'])->name(RouteServiceProvider::ROUTE_TRACK_STORE);
     });
 });
 
