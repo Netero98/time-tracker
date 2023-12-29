@@ -1,11 +1,11 @@
 <template>
     <div class="bg-white rounded-md p-1 gap-2">
-        <div class="flex rounded-md p-1 gap-1">
-            <span v-show="!isUpdating" class="flex-1 overflow-y-auto block">{{track.name}}</span>
-            <textarea v-show="isUpdating" v-model="form.name"/>
-            <p v-show="secondsSpentCurrent > 0">{{timeSpentReadable}} </p>
-            <SecondaryButton v-show="!startedAt && secondsSpentCurrent === 0" @click="startThisTrack"> Start </SecondaryButton>
-            <SecondaryButton v-show="!startedAt && secondsSpentCurrent > 0" @click="startThisTrack"> Continue </SecondaryButton>
+        <div class="grid grid-cols-2 gap-2 rounded-md p-1">
+            <p v-show="!isUpdating" class="flex-1 sm:max-w-40">{{track.name}}</p>
+            <textarea class="flex-1" v-show="isUpdating" v-model="form.name"/>
+            <div class="min-w-28"><p class="sm:min-w-14" v-show="secondsSpentCurrent > 0">{{timeSpentReadable}} </p></div>
+            <SecondaryButton v-show="!startedAt && secondsSpentCurrent === 0 && !isUpdating" @click="startThisTrack"> Start </SecondaryButton>
+            <SecondaryButton v-show="!startedAt && secondsSpentCurrent > 0 && !isUpdating" @click="startThisTrack"> Continue </SecondaryButton>
             <SuccessButton v-show="startedAt" @click="stopThisTrack">Stop</SuccessButton>
             <SecondaryButton v-show="!isUpdating" @click="isUpdating = true"> Update </SecondaryButton>
         </div>
