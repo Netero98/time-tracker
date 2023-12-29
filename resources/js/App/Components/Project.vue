@@ -10,13 +10,13 @@
                 @input="nameError = ''"
             />
             <InputError :message="nameError"/>
-            <PrimaryButton @click="toggleExpand">{{expanded ? 'collapse' : 'expand'}}</PrimaryButton>
+            <SecondaryButton @click="toggleExpand">{{expanded ? 'collapse' : 'expand'}}</SecondaryButton>
         </div>
         <div v-show="expanded" class="flex gap-2">
-            <SuccessButton v-show="!updatingName" @click="toggleUpdatingName">Update project name</SuccessButton>
+            <SecondaryButton v-show="!updatingName" @click="toggleUpdatingName">Update project name</SecondaryButton>
             <DangerButton v-show="!updatingName" @click="$emit('delete', project.id)">Delete project</DangerButton>
             <SuccessButton v-show="updatingName" @click="sendUpdateRequest">Save</SuccessButton>
-            <DangerButton v-show="updatingName" @click="toggleUpdatingName">Cancel</DangerButton>
+            <PrimaryButton v-show="updatingName" @click="toggleUpdatingName">Cancel</PrimaryButton>
         </div>
 
         <div v-show="expanded">
@@ -42,6 +42,7 @@ import {useForm} from "@inertiajs/vue3";
 import {routes} from "@/settings.js";
 import InputError from "@/Components/InputError.vue";
 import Tracks from "@/App/Components/Tracks.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 const props = defineProps({
     project: {

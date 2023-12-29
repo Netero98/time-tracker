@@ -4,15 +4,15 @@
             <span v-show="!isUpdating" class="flex-1 overflow-y-auto block">{{track.name}}</span>
             <textarea v-show="isUpdating" v-model="form.name"/>
             <p v-show="secondsSpentCurrent > 0">{{timeSpentReadable}} </p>
-            <PrimaryButton v-show="!startedAt && secondsSpentCurrent === 0" @click="startThisTrack"> Start </PrimaryButton>
-            <PrimaryButton v-show="!startedAt && secondsSpentCurrent > 0" @click="startThisTrack"> Continue </PrimaryButton>
-            <DangerButton v-show="startedAt" @click="stopThisTrack">Stop</DangerButton>
-            <PrimaryButton v-show="!isUpdating" @click="isUpdating = true"> Update </PrimaryButton>
+            <SecondaryButton v-show="!startedAt && secondsSpentCurrent === 0" @click="startThisTrack"> Start </SecondaryButton>
+            <SecondaryButton v-show="!startedAt && secondsSpentCurrent > 0" @click="startThisTrack"> Continue </SecondaryButton>
+            <SuccessButton v-show="startedAt" @click="stopThisTrack">Stop</SuccessButton>
+            <SecondaryButton v-show="!isUpdating" @click="isUpdating = true"> Update </SecondaryButton>
         </div>
 
         <div class="flex gap-1 ml-1" v-show="isUpdating">
             <SuccessButton @click="sendUpdateTrackRequest">Save</SuccessButton>
-            <DangerButton @click="isUpdating = false">Cancel</DangerButton>
+            <PrimaryButton @click="isUpdating = false">Cancel</PrimaryButton>
         </div>
         <p class="text-red-600">{{trackError}}</p>
     </div>
@@ -23,11 +23,11 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {getSecondsGoneToNow, secondsReadable} from "@/Utils/timeUtils.js";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {localStorageKeys, routes} from "@/settings.js";
-import DangerButton from "@/Components/DangerButton.vue";
 import {useForm} from "@inertiajs/vue3";
 import moment from "moment";
 import {read, remove, writeIfDoesntExist} from "@/Utils/localStorageUtils.js";
 import SuccessButton from "@/Components/SuccessButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 const props = defineProps({
     track: {
