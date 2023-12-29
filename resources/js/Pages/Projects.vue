@@ -1,3 +1,50 @@
+<template>
+    <AuthenticatedLayout>
+        <div class="mt-10 max-w-2xl mx-auto p-6">
+            <div class="flex mx-auto gap-2">
+                <TextInput @input="nameError = ''" class="flex-1" v-model="form.name"></TextInput>
+                <SuccessButton @click="sendCreateRequest">Add project</SuccessButton>
+                <InputError :message="nameError"/>
+            </div>
+
+            <div class="mt-4 flex flex-col gap-4">
+                <div v-for="project in projects" class="p-4 bg-white rounded-md">
+                    <Project
+                        @delete="(id) => { setPreDeleteState(id) }"
+                        :project="project"
+                        :key="project.id"
+                    />
+                </div>
+            </div>
+
+            <Modal :show="confirmingProjectDeletion" @close="closeModal">
+                <div class="p-6">
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                        Are you sure you want to delete this project?
+                    </h2>
+
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        Once project is deleted, all of its related data will be permanently deleted.
+                    </p>
+
+                    <div class="mt-6 flex justify-end">
+                        <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+
+                        <DangerButton
+                            class="ms-3"
+                            :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing"
+                            @click="sendDeleteRequest"
+                        >
+                            Delete Project
+                        </DangerButton>
+                    </div>
+                </div>
+            </Modal>
+        </div>
+    </AuthenticatedLayout>
+</template>
+
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import DangerButton from "@/Components/DangerButton.vue";
@@ -53,50 +100,3 @@ const setPreDeleteState = (id) => {
 }
 
 </script>
-
-<template>
-    <AuthenticatedLayout>
-        <div class="mt-10 max-w-2xl mx-auto p-6">
-            <div class="flex mx-auto gap-2">
-                <TextInput @input="nameError = ''" class="flex-1" v-model="form.name"></TextInput>
-                <SuccessButton @click="sendCreateRequest">Add project</SuccessButton>
-                <InputError :message="nameError"/>
-            </div>
-
-            <div class="mt-4 flex flex-col gap-4">
-                <div v-for="project in projects" class="p-4 bg-white rounded-md">
-                    <Project
-                        @delete="(id) => { setPreDeleteState(id) }"
-                        :project="project"
-                        :key="project.id"
-                    />
-                </div>
-            </div>
-
-            <Modal :show="confirmingProjectDeletion" @close="closeModal">
-                <div class="p-6">
-                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Are you sure you want to delete this project?
-                    </h2>
-
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        Once project is deleted, all of its related data will be permanently deleted.
-                    </p>
-
-                    <div class="mt-6 flex justify-end">
-                        <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
-
-                        <DangerButton
-                            class="ms-3"
-                            :class="{ 'opacity-25': form.processing }"
-                            :disabled="form.processing"
-                            @click="sendDeleteRequest"
-                        >
-                            Delete Project
-                        </DangerButton>
-                    </div>
-                </div>
-            </Modal>
-        </div>
-    </AuthenticatedLayout>
-</template>

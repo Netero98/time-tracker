@@ -1,3 +1,36 @@
+
+<template>
+    <div class="flex flex-col gap-4">
+        <div class="flex gap-2">
+            <p v-show="!updatingName" class="flex-1 font-semibold">{{project.name}}</p>
+            <TextInput
+                class="flex-1"
+                v-show="updatingName"
+                v-model="form.name"
+                @input="nameError = ''"
+            />
+            <InputError :message="nameError"/>
+            <PrimaryButton @click="toggleExpand">{{expanded ? 'collapse' : 'expand'}}</PrimaryButton>
+        </div>
+        <div v-show="expanded" class="flex gap-2">
+            <SuccessButton v-show="!updatingName" @click="toggleUpdatingName">Update project name</SuccessButton>
+            <DangerButton v-show="!updatingName" @click="$emit('delete', project.id)">Delete project</DangerButton>
+            <SuccessButton v-show="updatingName" @click="sendUpdateRequest">Save</SuccessButton>
+            <DangerButton v-show="updatingName" @click="toggleUpdatingName">Cancel</DangerButton>
+        </div>
+
+        <div v-show="expanded">
+            <h3 class="mt-8">Tracks</h3>
+            <Tracks
+                class="mt-2"
+                :tracks="project.tracks"
+                :projectId="project.id"
+            />
+        </div>
+    </div>
+</template>
+
+
 <script setup>
 
 import DangerButton from "@/Components/DangerButton.vue";
@@ -44,38 +77,3 @@ const sendUpdateRequest = () => {
 }
 
 </script>
-
-<template>
-    <div class="flex gap-4 flex-col">
-        <div class="flex gap-2">
-            <p v-show="!updatingName" class="flex-1">{{project.name}}</p>
-            <TextInput
-                class="flex-1"
-                v-show="updatingName"
-                v-model="form.name"
-                @input="nameError = ''"
-            />
-            <InputError :message="nameError"/>
-            <PrimaryButton @click="toggleExpand">{{expanded ? 'collapse' : 'expand'}}</PrimaryButton>
-        </div>
-        <div v-show="expanded" class="flex gap-2">
-            <SuccessButton v-show="!updatingName" @click="toggleUpdatingName">Update project name</SuccessButton>
-            <DangerButton v-show="!updatingName" @click="$emit('delete', project.id)">Delete project</DangerButton>
-            <SuccessButton v-show="updatingName" @click="sendUpdateRequest">Save</SuccessButton>
-            <DangerButton v-show="updatingName" @click="toggleUpdatingName">Cancel</DangerButton>
-        </div>
-
-        <div v-show="expanded">
-            <h3 class="mt-8 font-semibold">Tracks</h3>
-            <Tracks
-                class="mt-2"
-                :tracks="project.tracks"
-                :projectId="project.id"
-            />
-        </div>
-    </div>
-</template>
-
-<style scoped>
-
-</style>
