@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\TrackController;
+use App\Http\Controllers\TaskController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -44,10 +44,10 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [ProjectController::class, 'update'])->name(RouteServiceProvider::ROUTE_PROJECTS_UPDATE);
     });
 
-    Route::prefix('/tracks')->group(function () {
-        Route::patch('/{id}', [TrackController::class, 'update'])->name(RouteServiceProvider::ROUTE_TRACKS_UPDATE);
-        Route::post('/{project_id}', [TrackController::class, 'store'])->name(RouteServiceProvider::ROUTE_TRACKS_STORE);
-        Route::delete('/{id}', [TrackController::class, 'destroy'])->name(RouteServiceProvider::ROUTE_TRACKS_DELETE);
+    Route::prefix('/tasks')->group(function () {
+        Route::patch('/{id}', [TaskController::class, 'update'])->name(RouteServiceProvider::ROUTE_TASKS_UPDATE);
+        Route::post('/{project_id}', [TaskController::class, 'store'])->name(RouteServiceProvider::ROUTE_TASKS_STORE);
+        Route::delete('/{id}', [TaskController::class, 'destroy'])->name(RouteServiceProvider::ROUTE_TASKS_DELETE);
     });
 });
 

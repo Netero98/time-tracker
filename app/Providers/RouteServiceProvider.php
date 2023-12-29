@@ -24,9 +24,9 @@ class RouteServiceProvider extends ServiceProvider
     public const ROUTE_PROJECTS_DESTROY = 'projects.destroy';
     public const ROUTE_PROJECTS_UPDATE = 'projects.update';
 
-    public const ROUTE_TRACKS_UPDATE = 'tracks.update';
-    public const ROUTE_TRACKS_STORE = 'tracks.store';
-    public const ROUTE_TRACKS_DELETE = 'tracks.delete';
+    public const ROUTE_TASKS_UPDATE = 'tasks.update';
+    public const ROUTE_TASKS_STORE = 'tasks.store';
+    public const ROUTE_TASKS_DELETE = 'tasks.delete';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

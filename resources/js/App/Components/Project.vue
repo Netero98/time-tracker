@@ -22,10 +22,10 @@
         </div>
 
         <div v-show="expanded">
-            <h3 class="mt-8">Tracks</h3>
-            <Tracks
+            <h3 class="mt-8">Tasks</h3>
+            <Tasks
                 class="mt-2"
-                :tracks="project.tracks"
+                :tasks="project.tasks"
                 :projectId="project.id"
             />
         </div>
@@ -43,8 +43,8 @@ import TextInput from "@/Components/TextInput.vue";
 import {useForm} from "@inertiajs/vue3";
 import {routes} from "@/settings.js";
 import InputError from "@/Components/InputError.vue";
-import Tracks from "@/App/Components/Tracks.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
+import Tasks from "@/App/Components/Tasks.vue";
 
 const props = defineProps({
     project: {

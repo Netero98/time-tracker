@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Project;
-use App\Models\Track;
+use App\Models\Task;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -29,12 +29,12 @@ class DatabaseSeeder extends Seeder
              Project::PROP_USER_ID => 1,
          ]);
 
-         Track::factory(3)->create([
-             Track::PROP_PROJECT_ID => 1,
+         Task::factory(3)->create([
+             Task::PROP_PROJECT_ID => 1,
          ]);
 
-        Track::factory(2)->create([
-            Track::PROP_PROJECT_ID => 2,
+        Task::factory(2)->create([
+            Task::PROP_PROJECT_ID => 2,
         ]);
     }
 }

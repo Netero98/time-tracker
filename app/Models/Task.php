@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @method static Builder belongs (User $user)
- * @see Track::belongs(User $user)
+ * @see Task::belongs(User $user)
  */
-class Track extends Model
+class Task extends Model
 {
     public const PROP_PROJECT_ID = 'project_id';
     public const PROP_NAME = 'name';

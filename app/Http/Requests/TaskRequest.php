@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Track;
+use App\Models\Task;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TrackRequest extends FormRequest
+class TaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class TrackRequest extends FormRequest
     public function rules(): array
     {
         return [
-            Track::PROP_NAME => 'nullable|string|max:255',
-            Track::PROP_SECONDS => 'required|integer',
+            Task::PROP_NAME => 'nullable|string|max:255',
+            Task::PROP_SECONDS => 'required|integer',
         ];
     }
 }

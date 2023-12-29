@@ -25,10 +25,10 @@ final class Project extends Model
     public const PROP_NAME = 'name';
     public const PROP_UPDATED_AT = Model::UPDATED_AT;
 
-    public const RELATION_TRACKS = 'tracks';
+    public const RELATION_TASKS = 'tasks';
 
     protected $with = [
-        self::RELATION_TRACKS,
+        self::RELATION_TASKS,
     ];
 
     protected $fillable = [
@@ -36,11 +36,11 @@ final class Project extends Model
         self::PROP_USER_ID,
     ];
 
-    public function tracks(): HasMany
+    public function tasks(): HasMany
     {
         return $this->hasMany(
-            Track::class,
-            Track::PROP_PROJECT_ID,
+            Task::class,
+            Task::PROP_PROJECT_ID,
             self::PROP_ID
         );
     }

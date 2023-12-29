@@ -4,13 +4,13 @@ const routes = {
     projects_destroy: 'projects.destroy',
     projects_update: 'projects.update',
 
-    tracks_update: 'tracks.update',
-    tracks_store: 'tracks.store',
-    tracks_delete: 'tracks.delete',
+    tasks_update: 'tasks.update',
+    tasks_store: 'tasks.store',
+    tasks_delete: 'tasks.delete',
 }
 
 const localStorageKeys = {
-    track: 'track',
+    task: 'task',
 }
 
 export {routes, localStorageKeys}

@@ -3,15 +3,15 @@
 namespace Database\Factories;
 
 use App\Models\Project;
-use App\Models\Track;
+use App\Models\Task;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Track>
+ * @extends Factory<Task>
  */
-class TrackFactory extends Factory
+class TaskFactory extends Factory
 {
     /**
      * Define the model's default state.

@@ -1,23 +1,23 @@
 <template>
     <div class="bg-white rounded-md p-1 gap-2">
         <div class="grid grid-cols-2 gap-2 rounded-md p-1">
-            <p v-show="!isUpdating" class="flex-1 sm:max-w-40">{{track.name}}</p>
+            <p v-show="!isUpdating" class="flex-1 sm:max-w-40">{{task.name}}</p>
             <textarea class="flex-1" v-show="isUpdating" v-model="form.name"/>
             <div class="min-w-28"><p class="sm:min-w-14" v-show="secondsSpentCurrent > 0">{{timeSpentReadable}} </p></div>
-            <SecondaryButton v-show="!startedAt && secondsSpentCurrent === 0 && !isUpdating" @click="startThisTrack"> Start </SecondaryButton>
-            <SecondaryButton v-show="!startedAt && secondsSpentCurrent > 0 && !isUpdating" @click="startThisTrack"> Continue </SecondaryButton>
-            <SuccessButton v-show="startedAt" @click="stopThisTrack">Stop</SuccessButton>
+            <SecondaryButton v-show="!startedAt && secondsSpentCurrent === 0 && !isUpdating" @click="startThisTask"> Start </SecondaryButton>
+            <SecondaryButton v-show="!startedAt && secondsSpentCurrent > 0 && !isUpdating" @click="startThisTask"> Continue </SecondaryButton>
+            <SuccessButton v-show="startedAt" @click="stopThisTask">Stop</SuccessButton>
             <SecondaryButton v-show="!isUpdating" @click="isUpdating = true"> Update </SecondaryButton>
         </div>
 
         <div class="flex gap-1 ml-1 justify-between" v-show="isUpdating">
             <div class="flex gap-2">
-                <SuccessButton @click="sendUpdateTrackRequest">Save</SuccessButton>
+                <SuccessButton @click="sendUpdateTaskRequest">Save</SuccessButton>
                 <PrimaryButton @click="cancelUpdate">Cancel</PrimaryButton>
             </div>
             <DangerButton @click="sendDeleteRequest">Delete</DangerButton>
         </div>
-        <p class="text-red-600">{{trackError}}</p>
+        <p class="text-red-600">{{taskError}}</p>
     </div>
 </template>
 
@@ -34,48 +34,48 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 
 const props = defineProps({
-    track: {
+    task: {
         type: Object,
         required: true
     }
 })
 
 const startedAt = ref(null)
-const trackError = ref('')
+const taskError = ref('')
 const secondsSpentCurrent = ref(calculateSpentCurrent())
 let syncWithStorageInterval = null
 const form = useForm({
-    name: props.track.name,
-    seconds: props.track.seconds
+    name: props.task.name,
+    seconds: props.task.seconds
 })
 const isUpdating = ref(false)
 const timeSpentReadable = computed(() => secondsReadable(secondsSpentCurrent.value))
 
-function isSomeTrackActiveFromStorage() {
-    return read(localStorageKeys.track) && !!read(localStorageKeys.track).startedAt
+function isSomeTaskActiveFromStorage() {
+    return read(localStorageKeys.task) && !!read(localStorageKeys.task).startedAt
 }
 
-function isCurrentTrackActiveFromStorage() {
-    return isSomeTrackActiveFromStorage() && read(localStorageKeys.track).id === props.track.id
+function isCurrentTaskActiveFromStorage() {
+    return isSomeTaskActiveFromStorage() && read(localStorageKeys.task).id === props.task.id
 }
 
 function cancelUpdate() {
     isUpdating.value = false
 
-    form.name = props.track.name
+    form.name = props.task.name
 }
 
 function sendDeleteRequest() {
-    router.delete(route(routes.tracks_delete, {id: props.track.id}), {
+    router.delete(route(routes.tasks_delete, {id: props.task.id}), {
         preserveScroll: true,
     })
 }
 
-function sendUpdateTrackRequest() {
-    form.patch(route(routes.tracks_update, {id: props.track.id}), {
+function sendUpdateTaskRequest() {
+    form.patch(route(routes.tasks_update, {id: props.task.id}), {
         preserveScroll: true,
         onError: () => {
-            flashTrackErrorMessage('Error from server, track is not saved, please, try again.')
+            flashTaskErrorMessage('Error from server, task is not saved, please, try again.')
         },
         onSuccess: () => {
             isUpdating.value = false
@@ -83,11 +83,11 @@ function sendUpdateTrackRequest() {
     })
 }
 
-function startThisTrack () {
+function startThisTask () {
     const now = moment.now()
 
-    if (!writeIfDoesntExist(localStorageKeys.track, {id: props.track.id, startedAt: now})) {
-        flashTrackErrorMessage('Some track is already active. Stop it first')
+    if (!writeIfDoesntExist(localStorageKeys.task, {id: props.task.id, startedAt: now})) {
+        flashTaskErrorMessage('Some task is already in process. Stop it first')
 
         return
     }
@@ -97,21 +97,21 @@ function startThisTrack () {
     setSyncStateWithStorageInterval()
 }
 
-function stopThisTrack () {
+function stopThisTask () {
     form.seconds = calculateSpentCurrent()
 
-    sendUpdateTrackRequest()
+    sendUpdateTaskRequest()
 
-    remove(localStorageKeys.track)
+    remove(localStorageKeys.task)
     clearInterval(syncWithStorageInterval)
     startedAt.value = null
 }
 
-function flashTrackErrorMessage(message) {
-    trackError.value = message
+function flashTaskErrorMessage(message) {
+    taskError.value = message
 
     setTimeout(() => {
-        trackError.value = ''
+        taskError.value = ''
     }, 3000)
 }
 
@@ -125,7 +125,7 @@ function setSyncStateWithStorageInterval() {
 }
 
 function loadStateFromStorage() {
-    if (!isCurrentTrackActiveFromStorage()) {
+    if (!isCurrentTaskActiveFromStorage()) {
         startedAt.value = null
     }
 
@@ -134,22 +134,22 @@ function loadStateFromStorage() {
 
 function calculateSpentCurrent() {
     if (!startedAt.value) {
-        return props.track.seconds
+        return props.task.seconds
     }
 
-    return props.track.seconds + getSecondsGoneToNow(startedAt.value)
+    return props.task.seconds + getSecondsGoneToNow(startedAt.value)
 }
 
 onMounted(() => {
-    if (isCurrentTrackActiveFromStorage()) {
-        startedAt.value = read(localStorageKeys.track).startedAt
+    if (isCurrentTaskActiveFromStorage()) {
+        startedAt.value = read(localStorageKeys.task).startedAt
 
         setSyncStateWithStorageInterval()
     }
 })
 
 onUnmounted(() => {
-    remove(localStorageKeys.track)
+    remove(localStorageKeys.task)
     clearInterval(syncWithStorageInterval)
 })
 

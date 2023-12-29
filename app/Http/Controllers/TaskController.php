@@ -4,38 +4,38 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TrackRequest;
+use App\Http\Requests\TaskRequest;
 use App\Models\Project;
-use App\Models\Track;
+use App\Models\Task;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 
-class TrackController extends Controller
+class TaskController extends Controller
 {
-    public function store(TrackRequest $request, int $projectId)
+    public function store(TaskRequest $request, int $projectId)
     {
         /**
          * @var Project $project
          */
         $project = Project::belongs($request->user())->whereKey($projectId)->firstOrFail();
 
-        $project->tracks()->create($request->validated());
+        $project->tasks()->create($request->validated());
     }
 
-    public function update(TrackRequest $request, int $id)
+    public function update(TaskRequest $request, int $id)
     {
         $validated = $request->validated();
 
-        $track = Track::query()->whereKey($id)->belongs($request->user())->firstOrFail();
+        $task = Task::query()->whereKey($id)->belongs($request->user())->firstOrFail();
 
-        $track->update($validated);
+        $task->update($validated);
 
         return to_route(RouteServiceProvider::ROUTE_PROJECTS_INDEX);
     }
 
     public function destroy(Request $request, int $id)
     {
-        $track = Track::belongs($request->user())->whereKey($id)->firstOrFail();
-        $track->delete();
+        $task = Task::belongs($request->user())->whereKey($id)->firstOrFail();
+        $task->delete();
     }
 }
