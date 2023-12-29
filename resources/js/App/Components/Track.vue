@@ -62,7 +62,6 @@ function sendUpdateTrackRequest() {
             flashTrackErrorMessage('Error from server, track is not saved, please, try again.')
         },
         onSuccess: () => {
-            form.reset()
             isUpdating.value = false
         }
     })
