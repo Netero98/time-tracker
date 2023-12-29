@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/tracks')->group(function () {
         Route::patch('/{id}', [TrackController::class, 'update'])->name(RouteServiceProvider::ROUTE_TRACKS_UPDATE);
         Route::post('/{project_id}', [TrackController::class, 'store'])->name(RouteServiceProvider::ROUTE_TRACKS_STORE);
+        Route::delete('/{id}', [TrackController::class, 'destroy'])->name(RouteServiceProvider::ROUTE_TRACKS_DELETE);
     });
 });
 

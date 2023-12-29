@@ -6,6 +6,7 @@ const routes = {
 
     tracks_update: 'tracks.update',
     tracks_store: 'tracks.store',
+    tracks_delete: 'tracks.delete',
 }
 
 const localStorageKeys = {

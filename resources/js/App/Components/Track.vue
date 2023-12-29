@@ -10,9 +10,12 @@
             <SecondaryButton v-show="!isUpdating" @click="isUpdating = true"> Update </SecondaryButton>
         </div>
 
-        <div class="flex gap-1 ml-1" v-show="isUpdating">
-            <SuccessButton @click="sendUpdateTrackRequest">Save</SuccessButton>
-            <PrimaryButton @click="isUpdating = false">Cancel</PrimaryButton>
+        <div class="flex gap-1 ml-1 justify-between" v-show="isUpdating">
+            <div class="flex gap-2">
+                <SuccessButton @click="sendUpdateTrackRequest">Save</SuccessButton>
+                <PrimaryButton @click="cancelUpdate">Cancel</PrimaryButton>
+            </div>
+            <DangerButton @click="sendDeleteRequest">Delete</DangerButton>
         </div>
         <p class="text-red-600">{{trackError}}</p>
     </div>
@@ -23,11 +26,12 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {getSecondsGoneToNow, secondsReadable} from "@/Utils/timeUtils.js";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {localStorageKeys, routes} from "@/settings.js";
-import {useForm} from "@inertiajs/vue3";
+import {router, useForm} from "@inertiajs/vue3";
 import moment from "moment";
 import {read, remove, writeIfDoesntExist} from "@/Utils/localStorageUtils.js";
 import SuccessButton from "@/Components/SuccessButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
 
 const props = defineProps({
     track: {
@@ -53,6 +57,18 @@ function isSomeTrackActiveFromStorage() {
 
 function isCurrentTrackActiveFromStorage() {
     return isSomeTrackActiveFromStorage() && read(localStorageKeys.track).id === props.track.id
+}
+
+function cancelUpdate() {
+    isUpdating.value = false
+
+    form.name = props.track.name
+}
+
+function sendDeleteRequest() {
+    router.delete(route(routes.tracks_delete, {id: props.track.id}), {
+        preserveScroll: true,
+    })
 }
 
 function sendUpdateTrackRequest() {

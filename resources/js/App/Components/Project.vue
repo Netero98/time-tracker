@@ -12,11 +12,13 @@
             <InputError :message="nameError"/>
             <SecondaryButton @click="toggleExpand">{{expanded ? 'collapse' : 'expand'}}</SecondaryButton>
         </div>
-        <div v-show="expanded" class="flex gap-2">
+        <div v-show="expanded" class="flex gap-2 justify-between">
             <SecondaryButton v-show="!updatingName" @click="toggleUpdatingName">Update project name</SecondaryButton>
             <DangerButton v-show="!updatingName" @click="$emit('delete', project.id)">Delete project</DangerButton>
-            <SuccessButton v-show="updatingName" @click="sendUpdateRequest">Save</SuccessButton>
-            <PrimaryButton v-show="updatingName" @click="toggleUpdatingName">Cancel</PrimaryButton>
+            <div v-show="updatingName" class="flex gap-2">
+                <SuccessButton  @click="sendUpdateRequest">Save</SuccessButton>
+                <PrimaryButton v-show="updatingName" @click="toggleUpdatingName">Cancel</PrimaryButton>
+            </div>
         </div>
 
         <div v-show="expanded">

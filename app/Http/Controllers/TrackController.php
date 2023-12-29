@@ -8,6 +8,7 @@ use App\Http\Requests\TrackRequest;
 use App\Models\Project;
 use App\Models\Track;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Request;
 
 class TrackController extends Controller
 {
@@ -32,8 +33,9 @@ class TrackController extends Controller
         return to_route(RouteServiceProvider::ROUTE_PROJECTS_INDEX);
     }
 
-    public function destroy(Track $track)
+    public function destroy(Request $request, int $id)
     {
-        //
+        $track = Track::belongs($request->user())->whereKey($id)->firstOrFail();
+        $track->delete();
     }
 }
