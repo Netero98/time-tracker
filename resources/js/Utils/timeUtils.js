@@ -19,7 +19,7 @@ function readableTimeFromSeconds(seconds)
 function secondsReadable(seconds) {
     const time = readableTimeFromSeconds(seconds);
 
-    return `${time.hours} Hours | ${time.minutes} mins | ${time.seconds} seconds`
+    return `${time.hours} h | ${time.minutes} m | ${time.seconds} s`
 }
 
 function getSecondsGoneToNow (startedAtMilliseconds) {
