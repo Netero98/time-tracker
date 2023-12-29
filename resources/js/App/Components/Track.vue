@@ -2,7 +2,8 @@
     <div class="flex bg-white rounded-md p-1 gap-2">
         <p class="flex-1">{{track.name}}</p>
         <p v-show="secondsSpentCurrent > 0">Spent time: {{timeSpentReadable}} </p>
-        <PrimaryButton v-show="!startedAt" @click="startThisTrack"> Start </PrimaryButton>
+        <PrimaryButton v-show="!startedAt && secondsSpentCurrent === 0" @click="startThisTrack"> Start </PrimaryButton>
+        <PrimaryButton v-show="!startedAt && secondsSpentCurrent > 0" @click="startThisTrack"> Continue </PrimaryButton>
         <DangerButton v-show="startedAt" @click="stopThisTrack">Stop</DangerButton>
         <p>{{trackManipulationError}}</p>
     </div>
@@ -30,11 +31,10 @@ const trackManipulationError = ref('')
 const trackSaveError = ref('')
 const secondsSpentCurrent = ref(calculateSpentCurrent())
 let refreshSpentSecondsInterval = null
-const timeSpentReadable = computed(() => secondsReadable(secondsSpentCurrent.value))
 const form = useForm({
     seconds: props.track.seconds
 })
-
+const timeSpentReadable = computed(() => secondsReadable(secondsSpentCurrent.value))
 
 function computeIsSomeTrackActiveFromStorage() {
     return read(localStorageKeys.track) && !!read(localStorageKeys.track).startedAt
@@ -48,7 +48,7 @@ function startThisTrack () {
     const now = moment.now()
 
     if (!writeIfDoesntExist(localStorageKeys.track, {id: props.track.id, startedAt: now})) {
-        trackManipulationError.value = 'Some track already active. Stop it first'
+        trackManipulationError.value = 'Some track is already active. Stop it first'
 
         return
     }
