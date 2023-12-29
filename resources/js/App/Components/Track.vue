@@ -1,17 +1,20 @@
 <template>
-    <div class="flex bg-white rounded-md p-1 gap-2">
-        <p class="flex-1">{{track.name}}</p>
-        <p v-show="secondsSpentCurrent > 0">Spent time: {{timeSpentReadable}} </p>
-        <PrimaryButton v-show="!startedAt && secondsSpentCurrent === 0" @click="startThisTrack"> Start </PrimaryButton>
-        <PrimaryButton v-show="!startedAt && secondsSpentCurrent > 0" @click="startThisTrack"> Continue </PrimaryButton>
-        <DangerButton v-show="startedAt" @click="stopThisTrack">Stop</DangerButton>
-        <p>{{trackManipulationError}}</p>
+    <div class="bg-white rounded-md p-1 gap-2">
+        <div class="flex rounded-md p-1 gap-2">
+            <p class="flex-1">{{track.name}}</p>
+            <p v-show="secondsSpentCurrent > 0">Spent time: {{timeSpentReadable}} </p>
+            <PrimaryButton v-show="!startedAt && secondsSpentCurrent === 0" @click="startThisTrack"> Start </PrimaryButton>
+            <PrimaryButton v-show="!startedAt && secondsSpentCurrent > 0" @click="startThisTrack"> Continue </PrimaryButton>
+            <DangerButton v-show="startedAt" @click="stopThisTrack">Stop</DangerButton>
+        </div>
+
+        <p class="text-red-600">{{trackManipulationError}}</p>
     </div>
 </template>
 
 <script setup>
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import {secondsReadable} from "@/Utils/timeUtils.js";
+import {getSecondsGoneToNow, secondsReadable} from "@/Utils/timeUtils.js";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {localStorageKeys, routes} from "@/settings.js";
 import DangerButton from "@/Components/DangerButton.vue";
@@ -28,7 +31,6 @@ const props = defineProps({
 
 const startedAt = ref(null)
 const trackManipulationError = ref('')
-const trackSaveError = ref('')
 const secondsSpentCurrent = ref(calculateSpentCurrent())
 let refreshSpentSecondsInterval = null
 const form = useForm({
@@ -36,19 +38,19 @@ const form = useForm({
 })
 const timeSpentReadable = computed(() => secondsReadable(secondsSpentCurrent.value))
 
-function computeIsSomeTrackActiveFromStorage() {
+function isSomeTrackActiveFromStorage() {
     return read(localStorageKeys.track) && !!read(localStorageKeys.track).startedAt
 }
 
 function isCurrentTrackActiveFromStorage() {
-    return computeIsSomeTrackActiveFromStorage() && read(localStorageKeys.track).id === props.track.id
+    return isSomeTrackActiveFromStorage() && read(localStorageKeys.track).id === props.track.id
 }
 
 function startThisTrack () {
     const now = moment.now()
 
     if (!writeIfDoesntExist(localStorageKeys.track, {id: props.track.id, startedAt: now})) {
-        trackManipulationError.value = 'Some track is already active. Stop it first'
+        flashErrorMessage('Some track is already active. Stop it first')
 
         return
     }
@@ -64,25 +66,21 @@ function stopThisTrack () {
     form.patch(route(routes.tracks_update, {id: props.track.id}), {
         preserveScroll: true,
         onError: () => {
-            //todo: test
-            trackSaveError.value = 'Error from server, track is not saved, please, try again.'
+            flashErrorMessage('Error from server, track is not saved, please, try again.')
         }
     })
-
-    if (trackSaveError.value) {
-        return
-    }
 
     remove(localStorageKeys.track)
     clearInterval(refreshSpentSecondsInterval)
     startedAt.value = null
 }
 
-function getSecondsGoneToNow (startedAtMilliseconds) {
-    const started = moment(startedAtMilliseconds);
-    const stopped = moment(moment.now());
+function flashErrorMessage(message) {
+    trackManipulationError.value = message
 
-    return Math.round(stopped.diff(started) / 1000)
+    setTimeout(() => {
+        trackManipulationError.value = ''
+    }, 3000)
 }
 
 function setRefreshSpentSecondsInterval() {

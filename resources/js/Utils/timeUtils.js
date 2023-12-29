@@ -1,3 +1,4 @@
+import moment from "moment";
 
 function padNumber(number)
 {
@@ -21,5 +22,12 @@ function secondsReadable(seconds) {
     return `${time.hours} Hours | ${time.minutes} mins | ${time.seconds} seconds`
 }
 
+function getSecondsGoneToNow (startedAtMilliseconds) {
+    const started = moment(startedAtMilliseconds);
+    const stopped = moment(moment.now());
 
-export {secondsReadable}
+    return Math.round(stopped.diff(started) / 1000)
+}
+
+
+export {secondsReadable, getSecondsGoneToNow}

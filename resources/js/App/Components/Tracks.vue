@@ -24,6 +24,8 @@ function sendPostRequest() {
     router.post(route(routes.tracks_store, {project_id: props.projectId}), {
         name: name.value,
         seconds: seconds.value,
+    }, {
+      preserveScroll: true
     })
 }
 
