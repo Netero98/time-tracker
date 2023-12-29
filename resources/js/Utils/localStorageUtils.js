@@ -24,8 +24,6 @@ function remove(key) {
 }
 
 function write(key, data) {
-    console.log(data)
-
     if (data === null || data === '' || data === 'undefined') {
         localStorage.removeItem(key);
     } else {
