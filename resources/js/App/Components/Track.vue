@@ -1,8 +1,8 @@
 <template>
     <div class="bg-white rounded-md p-1 gap-2">
         <div class="flex rounded-md p-1 gap-2">
-            <p class="flex-1">{{track.name}}</p>
-            <p v-show="secondsSpentCurrent > 0">Spent time: {{timeSpentReadable}} </p>
+            <p class="flex-1 overflow-hidden">{{track.name}}</p>
+            <p v-show="secondsSpentCurrent > 0">{{timeSpentReadable}} </p>
             <PrimaryButton v-show="!startedAt && secondsSpentCurrent === 0" @click="startThisTrack"> Start </PrimaryButton>
             <PrimaryButton v-show="!startedAt && secondsSpentCurrent > 0" @click="startThisTrack"> Continue </PrimaryButton>
             <DangerButton v-show="startedAt" @click="stopThisTrack">Stop</DangerButton>
