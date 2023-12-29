@@ -1,5 +1,9 @@
 <template>
     <AuthenticatedLayout>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Projects</h2>
+        </template>
+
         <div class="mt-10 max-w-2xl mx-auto p-6">
             <div class="flex mx-auto gap-2">
                 <TextInput @input="nameError = ''" class="flex-1" v-model="form.name"></TextInput>
