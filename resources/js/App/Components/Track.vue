@@ -43,7 +43,7 @@ const props = defineProps({
 const startedAt = ref(null)
 const trackError = ref('')
 const secondsSpentCurrent = ref(calculateSpentCurrent())
-let refreshSpentSecondsInterval = null
+let syncWithStorageInterval = null
 const form = useForm({
     name: props.track.name,
     seconds: props.track.seconds
@@ -94,7 +94,7 @@ function startThisTrack () {
 
     startedAt.value = now
 
-    setRefreshSpentSecondsInterval()
+    setSyncStateWithStorageInterval()
 }
 
 function stopThisTrack () {
@@ -103,7 +103,7 @@ function stopThisTrack () {
     sendUpdateTrackRequest()
 
     remove(localStorageKeys.track)
-    clearInterval(refreshSpentSecondsInterval)
+    clearInterval(syncWithStorageInterval)
     startedAt.value = null
 }
 
@@ -115,13 +115,21 @@ function flashTrackErrorMessage(message) {
     }, 3000)
 }
 
-function setRefreshSpentSecondsInterval() {
-    refreshSpentSecondsInterval = setInterval(
+function setSyncStateWithStorageInterval() {
+    syncWithStorageInterval = setInterval(
         () => {
-            secondsSpentCurrent.value = calculateSpentCurrent()
+            loadStateFromStorage()
         },
         1000
     )
+}
+
+function loadStateFromStorage() {
+    if (!isCurrentTrackActiveFromStorage()) {
+        startedAt.value = null
+    }
+
+    secondsSpentCurrent.value = calculateSpentCurrent()
 }
 
 function calculateSpentCurrent() {
@@ -136,13 +144,13 @@ onMounted(() => {
     if (isCurrentTrackActiveFromStorage()) {
         startedAt.value = read(localStorageKeys.track).startedAt
 
-        setRefreshSpentSecondsInterval()
+        setSyncStateWithStorageInterval()
     }
 })
 
 onUnmounted(() => {
     remove(localStorageKeys.track)
-    clearInterval(refreshSpentSecondsInterval)
+    clearInterval(syncWithStorageInterval)
 })
 
 </script>
