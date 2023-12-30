@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectRequest;
+use App\Http\Resources\ProjectWithStatisticsResource;
 use App\Models\Project;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
@@ -15,7 +16,9 @@ final class ProjectController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Projects', [
-            'projects' => Project::ownActualFirst($request->user())->get(),
+            'projects' => ProjectWithStatisticsResource::collection(
+                Project::ownActualFirst($request->user())->get()
+            )->toArray($request)
         ]);
     }
 

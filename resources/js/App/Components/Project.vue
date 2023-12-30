@@ -10,6 +10,7 @@
                 @input="nameError = ''"
             />
             <InputError :message="nameError"/>
+            <p>Spent on project: {{readableProjectTime}}</p>
             <SecondaryButton @click="toggleExpand">{{expanded ? 'collapse' : 'expand'}}</SecondaryButton>
         </div>
         <div v-show="expanded" class="flex gap-2 justify-between">
@@ -37,7 +38,7 @@
 
 import DangerButton from "@/Components/DangerButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import SuccessButton from "@/Components/SuccessButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import {useForm} from "@inertiajs/vue3";
@@ -45,6 +46,7 @@ import {routes} from "@/settings.js";
 import InputError from "@/Components/InputError.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import Tasks from "@/App/Components/Tasks.vue";
+import {secondsReadable} from "@/Utils/timeUtils.js";
 
 const props = defineProps({
     project: {
@@ -61,17 +63,18 @@ const nameError = ref('')
 const form = useForm({
     name: props.project.name
 })
+const readableProjectTime = computed(() => secondsReadable(props.project.seconds_sum))
 
-const toggleExpand = () => {
+function toggleExpand() {
     updatingName.value = false
     expanded.value = !expanded.value
 }
 
-const toggleUpdatingName = () => {
+function toggleUpdatingName() {
     updatingName.value = !updatingName.value
 }
 
-const sendUpdateRequest = () => {
+function sendUpdateRequest() {
     form.patch(route(routes.projects_update, { id: props.project.id }), {
         preserveScroll: true,
         onSuccess: () => updatingName.value = false,

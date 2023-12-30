@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
+ * @property int seconds
+ *
  * @method static Builder belongs (User $user)
  * @see Task::belongs(User $user)
  */

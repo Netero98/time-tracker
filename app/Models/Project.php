@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * @property Task[] tasks
+ *
  * @method static Builder belongs(User $user)
  * @method static Builder actualFirst
  * @method static Builder ownActualFirst(User $user)
