@@ -11,4 +11,5 @@
 5. sail artisan db:seed
 6. sail artisan key:generate
 7. sail npm i
+8. sail npm run dev
 9. see localhost. Test user credentials: test@example.com:password
